@@ -12,10 +12,17 @@ export default function ModuleRoutes(app) {
     const status = await modulesDao.deleteModule(moduleId);
     res.send(status);
   });
-  app.get("/api/courses/:courseId/modules", (req, res) => {
+  app.get("/api/courses/:courseId/modules", async (req, res) => {
     const { courseId } = req.params;
-    const modules = modulesDao.findModulesForCourse(courseId);
-    res.json(modules);
+  
+    // 调用 DAO 获取对应课程的模块数据
+    const modules = await modulesDao.findModulesByCourseId(courseId);
+  
+    if (modules.length > 0) {
+      res.json(modules); // 返回模块数据
+    } else {
+      res.status(404).send(`No modules found for course ${courseId}`);
+    }
   });
 }
 
