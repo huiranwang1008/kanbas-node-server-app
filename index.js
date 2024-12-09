@@ -32,6 +32,9 @@ if (process.env.NODE_ENV !== "development") {
 app.use(express.json());
 app.use(session(sessionOptions));
 
+app.get("/", (req, res) => {
+  res.send("Welcome to the Node.js server! This is the root path.");
+});
 
 UserRoutes(app);
 CourseRoutes(app);
